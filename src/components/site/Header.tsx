@@ -38,6 +38,7 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
     { href: '#inicio', label: 'Inicio' },
     { href: '#nosotros', label: 'Nosotros' },
     { href: '#servicios', label: 'Servicios' },
+    { href: '#noticias', label: 'Noticias' },
     { href: '#galeria', label: 'Galería' },
     { href: '#testimonios', label: 'Testimonios' },
     { href: '#sugerencias', label: 'Sugerencias' },

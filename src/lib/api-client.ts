@@ -48,6 +48,20 @@ export interface Appointment {
   status: string
   createdAt: string
 }
+export interface NewsItem {
+  id: string
+  title: string
+  excerpt: string | null
+  content: string
+  category: string
+  image: string | null
+  date: string | null
+  author: string | null
+  featured: boolean
+  order: number
+  active: boolean
+  createdAt: string
+}
 export type Settings = Record<string, string>
 
 const STORAGE_KEY = 'cenca_admin_token'
@@ -121,6 +135,16 @@ export const api = {
   createAppointment: (data: Partial<Appointment>) => jsonReq('/api/appointments', 'POST', data),
   updateAppointment: (id: string, data: Partial<Appointment>) => jsonReq(`/api/appointments/${id}`, 'PUT', data),
   deleteAppointment: (id: string) => jsonReq(`/api/appointments/${id}`, 'DELETE'),
+
+  // News
+  getNews: () => jsonReq('/api/news', 'GET'),
+  createNews: (data: Partial<NewsItem>) => jsonReq('/api/news', 'POST', data),
+  updateNews: (id: string, data: Partial<NewsItem>) => jsonReq(`/api/news/${id}`, 'PUT', data),
+  deleteNews: (id: string) => jsonReq(`/api/news/${id}`, 'DELETE'),
+
+  // Visits
+  getVisits: () => jsonReq('/api/visits', 'GET'),
+  incrementVisit: () => jsonReq('/api/visits', 'POST'),
 
   // Upload
   uploadImage: async (file: File): Promise<string> => {

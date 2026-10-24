@@ -27,14 +27,14 @@ async function main() {
     { key: "brandShortName", value: "CENCA S.A.S." },
     { key: "heroTitle", value: "Cuidamos su salud con especialidad y calidez" },
     { key: "heroSubtitle", value: "Centro médico integral con especialistas de alta calidad, tecnología avanzada y trato humano. Su bienestar es nuestra prioridad." },
-    { key: "heroBadge", value: "Más de 15 años cuidando la salud de nuestra comunidad" },
+    { key: "heroBadge", value: "Más de 9 años cuidando la salud de nuestra comunidad" },
     { key: "aboutTitle", value: "Sobre Nosotros" },
     { key: "aboutContent", value: "El Centro de Especialistas La Candelaria (CENCA S.A.S.) es una institución comprometida con la atención médica integral de alta calidad. Contamos con un equipo de especialistas dedicados, tecnología médica moderna e instalaciones cómodas para brindar la mejor experiencia de atención a nuestros pacientes. Nuestra misión es promover la salud y el bienestar de la comunidad a través de servicios médicos especializados con calidez humana y ética profesional." },
     { key: "missionTitle", value: "Misión" },
     { key: "missionContent", value: "Brindar servicios de salud integral con calidad, calidez humana y oportunidad, mediante personal especializado y tecnología avanzada, contribuyendo al bienestar de la comunidad." },
     { key: "visionTitle", value: "Visión" },
     { key: "visionContent", value: "Ser el centro de especialistas líder en la región, reconocido por la excelencia en la atención médica, la innovación tecnológica y el compromiso con la comunidad." },
-    { key: "statsExperience", value: "15" },
+    { key: "statsExperience", value: "9" },
     { key: "statsExperienceLabel", value: "Años de experiencia" },
     { key: "statsSpecialists", value: "7" },
     { key: "statsSpecialistsLabel", value: "Especialidades" },
@@ -42,18 +42,25 @@ async function main() {
     { key: "statsPatientsLabel", value: "Pacientes atendidos" },
     { key: "statsServices", value: "10" },
     { key: "statsServicesLabel", value: "Servicios médicos" },
-    { key: "contactAddress", value: "Calle 45 # 12-34, Barrio La Candelaria, Bogotá, Colombia" },
+    // Sedes
+    { key: "sede1Title", value: "Sede 01" },
+    { key: "sede1Address", value: "CALLE 4 No 5 - 34, El Banco Magdalena" },
+    { key: "sede1Hours", value: "Lunes a Viernes 8:30 AM - 11:00 AM / 2:00 PM - 4:00 PM" },
+    { key: "sede2Title", value: "Sede 02" },
+    { key: "sede2Address", value: "CALLE 4 No 4 - 27, El Banco Magdalena" },
+    { key: "sede2Hours", value: "Lunes a Viernes 8:30 AM - 11:00 AM / 2:00 PM - 4:00 PM" },
+    { key: "contactAddress", value: "CALLE 4 No 5 - 34, El Banco, Magdalena, Colombia" },
     { key: "contactPhone", value: "+57 601 234 5678" },
     { key: "contactMobile", value: "+57 310 123 4567" },
     { key: "contactEmail", value: "contacto@candelaria.com" },
-    { key: "contactHoursWeekday", value: "Lunes - Viernes: 6:00 AM - 8:00 PM" },
-    { key: "contactHoursSaturday", value: "Sábados: 7:00 AM - 4:00 PM" },
+    { key: "contactHoursWeekday", value: "Lunes - Viernes: 8:30 AM - 11:00 AM / 2:00 PM - 4:00 PM" },
+    { key: "contactHoursSaturday", value: "Sábados: 8:30 AM - 11:00 AM" },
     { key: "contactHoursSunday", value: "Domingos: Cerrado" },
     { key: "socialFacebook", value: "https://facebook.com/cencacandelaria" },
     { key: "socialInstagram", value: "https://instagram.com/cencacandelaria" },
     { key: "socialTwitter", value: "https://twitter.com/cencacandelaria" },
     { key: "socialWhatsapp", value: "+573101234567" },
-    { key: "footerText", value: "© 2026 Centro de Especialistas La Candelaria (CENCA S.A.S.). Todos los derechos reservados." },
+    { key: "footerText", value: "© 2026 Centro de Especialistas La Candelaria (CENCA S.A.S.). El Banco, Magdalena. Todos los derechos reservados." },
   ];
   for (const s of defaultSettings) {
     const existing = await db.siteSetting.findUnique({ where: { key: s.key } });
@@ -71,10 +78,16 @@ async function main() {
     { title: "Nutrición", description: "Acompañamiento nutricional personalizado para una vida saludable y manejo de condiciones específicas.", icon: "pill", order: 5 },
     { title: "Psicología", description: "Atención psicológica y acompañamiento emocional para el bienestar mental de pacientes y familias.", icon: "brain", order: 6 },
     { title: "Cirugía General", description: "Procedimientos quirúrgicos generales con tecnología avanzada y equipo médico especializado.", icon: "syringe", order: 7 },
+    // Nuevas especialidades
+    { title: "Cardiología", description: "Diagnóstico, tratamiento y seguimiento de enfermedades cardiovasculares con tecnología de avanzada.", icon: "heart-pulse", order: 8 },
+    { title: "Cirugía Ortopédica", description: "Cirugía especializada del sistema musculoesquelético: fracturas, artroscopia, reemplazos articulares.", icon: "bone", order: 9 },
+    { title: "Cirugía Ginecológica", description: "Procedimientos quirúrgicos ginecológicos minimamente invasivos y convencionales con alta tecnología.", icon: "flower", order: 10 },
     // Servicios complementarios
-    { title: "Radiografía", description: "Estudios radiológicos digitales para diagnóstico preciso de lesiones y enfermedades.", icon: "radiography", order: 8 },
-    { title: "Ecografía", description: "Estudios ultrasonográficos para diagnóstico por imagen en tiempo real y monitoreo.", icon: "ultrasound", order: 9 },
-    { title: "Electrocardiograma", description: "Exámenes de electrocardiografía para evaluar la actividad y salud del corazón.", icon: "electrocardiogram", order: 10 },
+    { title: "Radiografía", description: "Estudios radiológicos digitales para diagnóstico preciso de lesiones y enfermedades.", icon: "radiography", order: 11 },
+    { title: "Ecografía", description: "Estudios ultrasonográficos para diagnóstico por imagen en tiempo real y monitoreo.", icon: "ultrasound", order: 12 },
+    { title: "Electrocardiograma", description: "Exámenes de electrocardiografía para evaluar la actividad y salud del corazón.", icon: "electrocardiogram", order: 13 },
+    { title: "Consulta de Cirugía", description: "Evaluación, diagnóstico y planificación quirúrgica con nuestro especialista en cirugía general.", icon: "stethoscope", order: 14 },
+    { title: "Cirugía Programada", description: "Procedimientos quirúrgicos programados en nuestro quirófano moderno con tecnología de avanzada.", icon: "syringe", order: 15 },
   ];
   const existingServices = await db.service.count();
   if (existingServices === 0) {
@@ -121,6 +134,25 @@ async function main() {
     for (const g of gallery) {
       await db.galleryItem.create({ data: g });
     }
+  }
+
+  // Default news items
+  const defaultNews = [
+    { title: "Inauguración de nuestra nueva sede", excerpt: "Estrenamos modernas instalaciones para brindar mejor servicio a nuestra comunidad.", content: "Nos complace anunciar la inauguración de una nueva sede completamente equipada con tecnología médica de vanguardia, diseñada para ofrecer una atención más cómoda y eficiente a todos nuestros pacientes. Esta nueva ubicación cuenta con consultorios amplios, sala de espera cómoda y área de procedimientos especiales.", category: "Noticia", image: null, date: new Date().toISOString().split('T')[0], author: "CENCA S.A.S.", featured: true, order: 1 },
+    { title: "Campaña de prevención cardiovascular", excerpt: "Realizamos una jornada gratuita de tamizaje cardiovascular durante el mes del corazón.", content: "Como parte de nuestro compromiso con la salud de la comunidad, durante todo el mes realizamos tamizajes gratuitos de presión arterial, glucemia y electrocardiograma. Atendimos a más de 200 pacientes con orientación médica profesional y recomendaciones personalizadas.", category: "Evento", image: null, date: new Date().toISOString().split('T')[0], author: "CENCA S.A.S.", featured: false, order: 2 },
+    { title: "Tips para una alimentación saludable", excerpt: "Nuestro equipo de nutrición comparte recomendaciones prácticas para mejorar tu dieta diaria.", content: "La alimentación balanceada es la base de una vida saludable. Te compartimos 5 tips clave: 1) Aumenta el consumo de frutas y verduras frescas. 2) Reduce el consumo de azúcares añadidos. 3) Mantente hidratado. 4) Evita alimentos ultraprocesados. 5) Realiza al menos 30 minutos de actividad física al día. Consulta con nuestros especialistas para un plan personalizado.", category: "Blog", image: null, date: new Date().toISOString().split('T')[0], author: "Dra. Nutrición", featured: false, order: 3 },
+  ];
+  const existingNews = await db.newsItem.count();
+  if (existingNews === 0) {
+    for (const n of defaultNews) {
+      await db.newsItem.create({ data: n });
+    }
+  }
+
+  // Initialize visit counter
+  const existingVisit = await db.visit.count();
+  if (existingVisit === 0) {
+    await db.visit.create({ data: { count: 1247 } });
   }
 
   console.log("Seed completed successfully");

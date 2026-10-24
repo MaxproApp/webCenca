@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Phone, ShieldCheck, Stethoscope, Award, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { AnimatedCounter } from './AnimatedCounter'
 
 const container = {
   hidden: {},
@@ -228,12 +229,12 @@ export function Hero({
               className="text-center px-4 py-6 rounded-2xl bg-white/10 backdrop-blur border border-white/15"
             >
               <motion.div
-                className="text-3xl sm:text-4xl font-bold font-serif text-white"
+                className="text-3xl sm:text-4xl font-bold font-serif text-white tabular-nums"
                 whileInView={{ scale: [0.8, 1.1, 1] }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, ease: 'easeOut' }}
               >
-                {s.value}
+                <AnimatedCounter value={s.value} />
               </motion.div>
               <div className="mt-1 text-xs sm:text-sm uppercase tracking-wide text-blue-50/80">{s.label}</div>
             </motion.div>

@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Shield, Heart, MessageCircle } from 'lucide-react'
+import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Shield, Heart, MessageCircle, Building2, Clock } from 'lucide-react'
+import { VisitCounter } from './VisitCounter'
 
 export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?: () => void }) {
   return (
@@ -9,7 +10,7 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Brand */}
-          <div className="md:col-span-5">
+          <div className="md:col-span-4">
             <div className="flex items-center gap-3">
               <img
                 src="/logo-candelaria.jpg"
@@ -23,7 +24,7 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </div>
             <p className="mt-4 text-sm text-white/70 leading-relaxed max-w-md">
               Centro de Especialistas La Candelaria (CENCA S.A.S.). Atención médica integral con calidad,
-              calidez humana y tecnología de avanzada.
+              calidez humana y tecnología de avanzada. El Banco, Magdalena.
             </p>
             <div className="mt-5 flex items-center gap-2">
               {settings.socialWhatsapp && (
@@ -67,6 +68,7 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
               {[
                 { href: '#nosotros', label: 'Nosotros' },
                 { href: '#servicios', label: 'Servicios' },
+                { href: '#noticias', label: 'Noticias' },
                 { href: '#galeria', label: 'Galería' },
                 { href: '#testimonios', label: 'Testimonios' },
                 { href: '#sugerencias', label: 'Sugerencias' },
@@ -78,26 +80,61 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </ul>
           </div>
 
+          {/* Sedes */}
+          {(settings.sede1Address || settings.sede2Address) && (
+            <div className="md:col-span-3">
+              <h4 className="font-serif font-bold text-white mb-4 flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-primary" /> Nuestras sedes
+              </h4>
+              <div className="space-y-3 text-sm">
+                {settings.sede1Address && (
+                  <div>
+                    <div className="text-xs font-semibold text-primary uppercase tracking-wide">{settings.sede1Title || 'Sede 01'}</div>
+                    <div className="flex items-start gap-2 mt-1 text-white/70">
+                      <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-primary/70" />
+                      <span>{settings.sede1Address}</span>
+                    </div>
+                    {settings.sede1Hours && (
+                      <div className="flex items-start gap-2 mt-1 text-white/50 text-xs">
+                        <Clock className="h-3 w-3 mt-0.5 shrink-0" />
+                        <span>{settings.sede1Hours}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {settings.sede2Address && (
+                  <div>
+                    <div className="text-xs font-semibold text-primary uppercase tracking-wide">{settings.sede2Title || 'Sede 02'}</div>
+                    <div className="flex items-start gap-2 mt-1 text-white/70">
+                      <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-primary/70" />
+                      <span>{settings.sede2Address}</span>
+                    </div>
+                    {settings.sede2Hours && (
+                      <div className="flex items-start gap-2 mt-1 text-white/50 text-xs">
+                        <Clock className="h-3 w-3 mt-0.5 shrink-0" />
+                        <span>{settings.sede2Hours}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Contact */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-2">
             <h4 className="font-serif font-bold text-white mb-4">Contacto</h4>
             <ul className="space-y-3 text-sm text-white/70">
-              {settings.contactAddress && (
-                <li className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <span>{settings.contactAddress}</span>
-                </li>
-              )}
               {settings.contactPhone && (
-                <li className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-primary shrink-0" />
-                  <a href={`tel:${settings.contactPhone}`} className="hover:text-primary transition-colors">{settings.contactPhone}</a>
+                <li className="flex items-start gap-2">
+                  <Phone className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <a href={`tel:${settings.contactPhone}`} className="hover:text-primary transition-colors break-all">{settings.contactPhone}</a>
                 </li>
               )}
               {settings.contactEmail && (
-                <li className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-primary shrink-0" />
-                  <a href={`mailto:${settings.contactEmail}`} className="hover:text-primary transition-colors">{settings.contactEmail}</a>
+                <li className="flex items-start gap-2">
+                  <Mail className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <a href={`mailto:${settings.contactEmail}`} className="hover:text-primary transition-colors break-all">{settings.contactEmail}</a>
                 </li>
               )}
             </ul>
@@ -106,7 +143,9 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/60">{settings.footerText}</p>
-          <div className="flex items-center gap-3 text-xs text-white/60">
+          <div className="flex items-center gap-3 text-xs text-white/60 flex-wrap justify-center">
+            <VisitCounter variant="dark" />
+            <span className="hidden sm:inline">·</span>
             <span className="flex items-center gap-1">
               <Shield className="h-3 w-3" /> Datos protegidos
             </span>

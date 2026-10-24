@@ -150,8 +150,44 @@ export function Contact({ settings, services }: { settings: any; services: any[]
               </motion.div>
             </motion.div>
 
+            {/* Sedes - cards destacadas */}
+            {(settings.sede1Address || settings.sede2Address) && (
+              <motion.div
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="rounded-2xl bg-white/10 backdrop-blur border border-white/15 p-5"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+                    <MapPin className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-blue-50/80">Nuestras sedes</div>
+                    <div className="font-bold text-white text-sm">El Banco, Magdalena</div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {settings.sede1Address && (
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                      <div className="text-xs font-semibold text-cyan-300 uppercase tracking-wide">{settings.sede1Title || 'Sede 01'}</div>
+                      <div className="text-sm font-medium text-white mt-0.5">{settings.sede1Address}</div>
+                      {settings.sede1Hours && <div className="text-xs text-blue-50/70 mt-0.5 flex items-center gap-1"><Clock className="h-3 w-3" /> {settings.sede1Hours}</div>}
+                    </div>
+                  )}
+                  {settings.sede2Address && (
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                      <div className="text-xs font-semibold text-cyan-300 uppercase tracking-wide">{settings.sede2Title || 'Sede 02'}</div>
+                      <div className="text-sm font-medium text-white mt-0.5">{settings.sede2Address}</div>
+                      {settings.sede2Hours && <div className="text-xs text-blue-50/70 mt-0.5 flex items-center gap-1"><Clock className="h-3 w-3" /> {settings.sede2Hours}</div>}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
             {[
-              { icon: MapPin, title: 'Dirección', value: settings.contactAddress },
               { icon: Phone, title: 'Teléfono', value: settings.contactPhone },
               { icon: Mail, title: 'Email', value: settings.contactEmail },
               { icon: Clock, title: 'Horario', value: [
@@ -165,7 +201,7 @@ export function Contact({ settings, services }: { settings: any; services: any[]
                 initial={{ opacity: 0, x: -16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
+                transition={{ duration: 0.5, delay: 0.25 + i * 0.08 }}
                 whileHover={{ x: 4, transition: { type: 'spring', stiffness: 300, damping: 15 } }}
                 className="flex items-start gap-4 p-5 rounded-2xl bg-white/10 backdrop-blur border border-white/15"
               >

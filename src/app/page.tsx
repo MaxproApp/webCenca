@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { Header } from '@/components/site/Header'
 import { Hero } from '@/components/site/Hero'
 import { About } from '@/components/site/About'
@@ -10,29 +11,33 @@ import { Testimonials } from '@/components/site/Testimonials'
 import { Contact } from '@/components/site/Contact'
 import { Footer } from '@/components/site/Footer'
 import { FloatingWhatsApp } from '@/components/site/FloatingWhatsApp'
+import { News } from '@/components/site/News'
 import { AdminPanel } from '@/components/admin/AdminPanel'
-import { api, type Settings, type Service, type GalleryItem, type Testimonial } from '@/lib/api-client'
+import { api, type Settings, type Service, type GalleryItem, type Testimonial, type NewsItem } from '@/lib/api-client'
 
 export default function Home() {
   const [settings, setSettings] = useState<Settings>({})
   const [services, setServices] = useState<Service[]>([])
   const [gallery, setGallery] = useState<GalleryItem[]>([])
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [news, setNews] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
   const [adminOpen, setAdminOpen] = useState(false)
 
   const loadData = useCallback(async () => {
     try {
-      const [s, sv, g, t] = await Promise.all([
+      const [s, sv, g, t, n] = await Promise.all([
         api.getSettings(),
         api.getServices(),
         api.getGallery(),
         api.getTestimonials(),
+        api.getNews(),
       ])
       setSettings(s)
       setServices(sv)
       setGallery(g)
       setTestimonials(t)
+      setNews(n)
     } catch (e) {
       console.error('Failed to load data:', e)
     } finally {
@@ -92,6 +97,7 @@ export default function Home() {
           visionContent={settings.visionContent}
         />
         <Services items={services} />
+        {news.length > 0 && <News items={news} />}
         {gallery.length > 0 && <Gallery items={gallery} />}
         {testimonials.length > 0 && <Testimonials items={testimonials} />}
         <Contact settings={settings} services={services} />
@@ -100,11 +106,13 @@ export default function Home() {
 
       <FloatingWhatsApp whatsapp={settings.socialWhatsapp || ''} />
 
-      <AdminPanel
-        open={adminOpen}
-        onClose={() => setAdminOpen(false)}
-        onChange={loadData}
-      />
+      <AnimatePresence>
+        <AdminPanel
+          open={adminOpen}
+          onClose={() => setAdminOpen(false)}
+          onChange={loadData}
+        />
+      </AnimatePresence>
     </div>
   )
 }

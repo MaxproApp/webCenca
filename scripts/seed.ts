@@ -36,11 +36,11 @@ async function main() {
     { key: "visionContent", value: "Ser el centro de especialistas líder en la región, reconocido por la excelencia en la atención médica, la innovación tecnológica y el compromiso con la comunidad." },
     { key: "statsExperience", value: "15" },
     { key: "statsExperienceLabel", value: "Años de experiencia" },
-    { key: "statsSpecialists", value: "20" },
-    { key: "statsSpecialistsLabel", value: "Epecialistas" },
+    { key: "statsSpecialists", value: "7" },
+    { key: "statsSpecialistsLabel", value: "Especialidades" },
     { key: "statsPatients", value: "12,000+" },
     { key: "statsPatientsLabel", value: "Pacientes atendidos" },
-    { key: "statsServices", value: "30" },
+    { key: "statsServices", value: "10" },
     { key: "statsServicesLabel", value: "Servicios médicos" },
     { key: "contactAddress", value: "Calle 45 # 12-34, Barrio La Candelaria, Bogotá, Colombia" },
     { key: "contactPhone", value: "+57 601 234 5678" },
@@ -62,16 +62,19 @@ async function main() {
     }
   }
 
-  // Default services
+  // Default services - especialidades médicas
   const services = [
-    { title: "Medicina General", description: "Atención médica primaria para toda la familia, prevención y diagnóstico temprano de enfermedades.", icon: "stethoscope", order: 1 },
-    { title: "Cardiología", description: "Diagnóstico y tratamiento de enfermedades del corazón con equipos de última tecnología.", icon: "heart-pulse", order: 2 },
-    { title: "Pediatría", description: "Cuidado especializado para niños y adolescentes, control de crecimiento y vacunación.", icon: "baby", order: 3 },
-    { title: "Ginecología", description: "Atención integral de la salud femenina, control prenatal, prevención y tratamiento.", icon: "flower", order: 4 },
-    { title: "Ortopedia", description: "Tratamiento de lesiones óseas, musculares y articulares, cirugía y rehabilitación.", icon: "bone", order: 5 },
-    { title: "Dermatología", description: "Diagnóstico y tratamiento de afecciones de la piel, cabello y uñas.", icon: "hand", order: 6 },
-    { title: "Oftalmología", description: "Cuidado de la salud visual, cirugías, exámenes y tratamiento de enfermedades oculares.", icon: "eye", order: 7 },
-    { title: "Odontología", description: "Servicios odontológicos integrales: limpieza, ortodoncia, endodoncia y estética dental.", icon: "smile", order: 8 },
+    { title: "Medicina Interna", description: "Atención médica integral del adulto, diagnóstico y manejo de enfermedades crónicas y complejas.", icon: "stethoscope", order: 1 },
+    { title: "Ortopedia", description: "Tratamiento de lesiones óseas, musculares y articulares, cirugía y rehabilitación del sistema musculoesquelético.", icon: "bone", order: 2 },
+    { title: "Ginecología", description: "Atención integral de la salud femenina, control prenatal, prevención y tratamiento ginecológico.", icon: "flower", order: 3 },
+    { title: "Pediatría", description: "Cuidado especializado para niños y adolescentes, control de crecimiento, vacunación y desarrollo.", icon: "baby", order: 4 },
+    { title: "Nutrición", description: "Acompañamiento nutricional personalizado para una vida saludable y manejo de condiciones específicas.", icon: "pill", order: 5 },
+    { title: "Psicología", description: "Atención psicológica y acompañamiento emocional para el bienestar mental de pacientes y familias.", icon: "brain", order: 6 },
+    { title: "Cirugía General", description: "Procedimientos quirúrgicos generales con tecnología avanzada y equipo médico especializado.", icon: "syringe", order: 7 },
+    // Servicios complementarios
+    { title: "Radiografía", description: "Estudios radiológicos digitales para diagnóstico preciso de lesiones y enfermedades.", icon: "radiography", order: 8 },
+    { title: "Ecografía", description: "Estudios ultrasonográficos para diagnóstico por imagen en tiempo real y monitoreo.", icon: "ultrasound", order: 9 },
+    { title: "Electrocardiograma", description: "Exámenes de electrocardiografía para evaluar la actividad y salud del corazón.", icon: "electrocardiogram", order: 10 },
   ];
   const existingServices = await db.service.count();
   if (existingServices === 0) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Shield, Heart } from 'lucide-react'
+import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Shield, Heart, MessageCircle } from 'lucide-react'
 
 export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?: () => void }) {
   return (
@@ -25,6 +25,16 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
               calidez humana y tecnología de avanzada.
             </p>
             <div className="mt-5 flex items-center gap-2">
+              {settings.socialWhatsapp && (
+                <a
+                  href={`https://wa.me/${settings.socialWhatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, quiero agendar una cita en CENCA S.A.S.')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-9 items-center gap-1.5 px-3 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-medium transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4" /> WhatsApp
+                </a>
+              )}
               {[
                 { icon: Facebook, url: settings.socialFacebook },
                 { icon: Instagram, url: settings.socialInstagram },
@@ -52,10 +62,9 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
               {[
                 { href: '#nosotros', label: 'Nosotros' },
                 { href: '#servicios', label: 'Servicios' },
-                { href: '#especialistas', label: 'Especialistas' },
                 { href: '#galeria', label: 'Galería' },
                 { href: '#testimonios', label: 'Testimonios' },
-                { href: '#contacto', label: 'Contacto' },
+                { href: '#sugerencias', label: 'Sugerencias' },
               ].map((l) => (
                 <li key={l.href}>
                   <a href={l.href} className="hover:text-primary transition-colors">{l.label}</a>

@@ -6,13 +6,24 @@ import {
   Menu as MenuIcon,
   X as XIcon,
   Phone as PhoneIcon,
-  Calendar as CalendarIcon,
+  MessageCircle,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 
-export function Header({ brandName, phone }: { brandName: string; phone: string }) {
+interface HeaderProps {
+  brandName: string
+  phone: string
+  whatsapp: string
+}
+
+function waLink(whatsapp: string, text: string) {
+  const num = (whatsapp || '').replace(/[^0-9]/g, '')
+  return `https://wa.me/${num}?text=${encodeURIComponent(text)}`
+}
+
+export function Header({ brandName, phone, whatsapp }: HeaderProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -27,11 +38,12 @@ export function Header({ brandName, phone }: { brandName: string; phone: string 
     { href: '#inicio', label: 'Inicio' },
     { href: '#nosotros', label: 'Nosotros' },
     { href: '#servicios', label: 'Servicios' },
-    { href: '#especialistas', label: 'Especialistas' },
     { href: '#galeria', label: 'Galería' },
     { href: '#testimonios', label: 'Testimonios' },
-    { href: '#contacto', label: 'Contacto' },
+    { href: '#sugerencias', label: 'Sugerencias' },
   ]
+
+  const waHref = waLink(whatsapp, 'Hola, quiero agendar una cita en CENCA S.A.S.')
 
   return (
     <header
@@ -83,9 +95,9 @@ export function Header({ brandName, phone }: { brandName: string; phone: string 
                 <span className="text-sm">Llamar</span>
               </a>
             </Button>
-            <Button asChild className="shadow-sm">
-              <a href="#contacto" className="flex items-center gap-2">
-                <CalendarIcon className="h-4 w-4" />
+            <Button asChild className="bg-green-600 hover:bg-green-700 shadow-sm">
+              <a href={waHref} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" />
                 <span className="text-sm">Agendar cita</span>
               </a>
             </Button>
@@ -134,9 +146,9 @@ export function Header({ brandName, phone }: { brandName: string; phone: string 
                     </a>
                   </Button>
                   <SheetClose asChild>
-                    <Button asChild className="w-full">
-                      <a href="#contacto" className="flex items-center gap-2 justify-center">
-                        <CalendarIcon className="h-4 w-4" /> Agendar cita
+                    <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                      <a href={waHref} target="_blank" rel="noreferrer" className="flex items-center gap-2 justify-center">
+                        <MessageCircle className="h-4 w-4" /> Agendar cita
                       </a>
                     </Button>
                   </SheetClose>

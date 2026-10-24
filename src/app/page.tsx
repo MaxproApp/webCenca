@@ -5,18 +5,16 @@ import { Header } from '@/components/site/Header'
 import { Hero } from '@/components/site/Hero'
 import { About } from '@/components/site/About'
 import { Services } from '@/components/site/Services'
-import { Doctors } from '@/components/site/Doctors'
 import { Gallery } from '@/components/site/Gallery'
 import { Testimonials } from '@/components/site/Testimonials'
 import { Contact } from '@/components/site/Contact'
 import { Footer } from '@/components/site/Footer'
 import { AdminPanel } from '@/components/admin/AdminPanel'
-import { api, type Settings, type Service, type Doctor, type GalleryItem, type Testimonial } from '@/lib/api-client'
+import { api, type Settings, type Service, type GalleryItem, type Testimonial } from '@/lib/api-client'
 
 export default function Home() {
   const [settings, setSettings] = useState<Settings>({})
   const [services, setServices] = useState<Service[]>([])
-  const [doctors, setDoctors] = useState<Doctor[]>([])
   const [gallery, setGallery] = useState<GalleryItem[]>([])
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loading, setLoading] = useState(true)
@@ -24,16 +22,14 @@ export default function Home() {
 
   const loadData = useCallback(async () => {
     try {
-      const [s, sv, d, g, t] = await Promise.all([
+      const [s, sv, g, t] = await Promise.all([
         api.getSettings(),
         api.getServices(),
-        api.getDoctors(),
         api.getGallery(),
         api.getTestimonials(),
       ])
       setSettings(s)
       setServices(sv)
-      setDoctors(d)
       setGallery(g)
       setTestimonials(t)
     } catch (e) {
@@ -68,6 +64,7 @@ export default function Home() {
       <Header
         brandName={settings.brandName || 'CENCA S.A.S.'}
         phone={settings.contactPhone || ''}
+        whatsapp={settings.socialWhatsapp || ''}
       />
       <main className="flex-1">
         <Hero
@@ -75,6 +72,7 @@ export default function Home() {
           heroTitle={settings.heroTitle}
           heroSubtitle={settings.heroSubtitle}
           phone={settings.contactPhone}
+          whatsapp={settings.socialWhatsapp}
           statsExperience={settings.statsExperience}
           statsExperienceLabel={settings.statsExperienceLabel}
           statsSpecialists={settings.statsSpecialists}
@@ -93,7 +91,6 @@ export default function Home() {
           visionContent={settings.visionContent}
         />
         <Services items={services} />
-        <Doctors items={doctors} />
         {gallery.length > 0 && <Gallery items={gallery} />}
         {testimonials.length > 0 && <Testimonials items={testimonials} />}
         <Contact settings={settings} services={services} />

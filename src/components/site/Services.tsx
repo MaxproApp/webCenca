@@ -13,12 +13,16 @@ import {
   Brain,
   Syringe,
   Pill,
+  ScanLine,
+  Waves,
+  Activity as Activity2,
   type LucideIcon,
 } from 'lucide-react'
 import type { Service } from '@/lib/api-client'
 
 const ICON_MAP: Record<string, LucideIcon> = {
   stethoscope: Stethoscope,
+  'stethoscope-2': Stethoscope,
   'heart-pulse': HeartPulse,
   'heart_pulse': HeartPulse,
   heart: HeartPulse,
@@ -32,6 +36,12 @@ const ICON_MAP: Record<string, LucideIcon> = {
   brain: Brain,
   syringe: Syringe,
   pill: Pill,
+  radiography: ScanLine,
+  radiografia: ScanLine,
+  ultrasound: Waves,
+  ecografia: Waves,
+  electrocardiogram: Activity2,
+  electrocardiograma: Activity2,
 }
 
 export function Services({ items }: { items: Service[] }) {

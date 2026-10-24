@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, Phone, ShieldCheck, Stethoscope, Award } from 'lucide-react'
+import { Phone, ShieldCheck, Stethoscope, Award, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function Hero({
@@ -8,6 +8,7 @@ export function Hero({
   heroTitle,
   heroSubtitle,
   phone,
+  whatsapp,
   statsExperience,
   statsExperienceLabel,
   statsSpecialists,
@@ -17,6 +18,7 @@ export function Hero({
   statsServices,
   statsServicesLabel,
 }: any) {
+  const waHref = `https://wa.me/${(whatsapp || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, quiero agendar una cita en CENCA S.A.S.')}`
   return (
     <section id="inicio" className="relative overflow-hidden bg-gradient-hero">
       {/* Decorative blur shapes */}
@@ -52,9 +54,9 @@ export function Hero({
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-blue-50 shadow-lg shadow-blue-900/30">
-                <a href="#contacto" className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5" />
+              <Button asChild size="lg" className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-900/30">
+                <a href={waHref} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5" />
                   Agende su cita
                 </a>
               </Button>
@@ -75,9 +77,9 @@ export function Hero({
             <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
               {[
                 { icon: Award, label: 'Calidad', value: 'Premium' },
-                { icon: Stethoscope, label: 'Especialistas', value: 'Certificados' },
+                { icon: Stethoscope, label: 'Especialidades', value: 'Médicas' },
                 { icon: ShieldCheck, label: 'Seguridad', value: 'Garantizada' },
-                { icon: Calendar, label: 'Atención', value: 'Puntual' },
+                { icon: MessageCircle, label: 'Citas', value: 'Por WhatsApp' },
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur border border-white/10">

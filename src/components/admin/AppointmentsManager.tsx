@@ -58,14 +58,14 @@ export function AppointmentsManager() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-serif text-lg font-bold">Solicitudes de citas ({items.length})</h3>
+        <h3 className="font-serif text-lg font-bold">Mensajes recibidos ({items.length})</h3>
         <Button onClick={load} size="sm" variant="outline">Actualizar</Button>
       </div>
 
       {items.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center text-muted-foreground">
-            No hay solicitudes de citas.
+            No hay mensajes de sugerencias o reclamos.
           </CardContent>
         </Card>
       ) : (
@@ -103,7 +103,7 @@ export function AppointmentsManager() {
         <Dialog open onOpenChange={(o) => !o && setSelected(null)}>
           <DialogContent className="max-w-lg">
             <DialogHeader>
-              <DialogTitle>Solicitud de cita</DialogTitle>
+              <DialogTitle>Mensaje recibido</DialogTitle>
             </DialogHeader>
             <div className="space-y-3 text-sm">
               <div><strong>Nombre:</strong> {selected.name}</div>

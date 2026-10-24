@@ -8,24 +8,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { X, LogOut, Settings, Stethoscope, UserCircle2, Images, Star, CalendarCheck, LayoutDashboard } from 'lucide-react'
+import { X, LogOut, Settings, Stethoscope, Images, Star, CalendarCheck, LayoutDashboard } from 'lucide-react'
 import { clearAdminToken, getAdminToken } from '@/lib/api-client'
 import { AdminLogin } from './AdminLogin'
 import { SettingsEditor } from './SettingsEditor'
 import { ServicesManager } from './ServicesManager'
-import { DoctorsManager } from './DoctorsManager'
 import { GalleryManager } from './GalleryManager'
 import { TestimonialsManager } from './TestimonialsManager'
 import { AppointmentsManager } from './AppointmentsManager'
 
-type TabKey = 'dashboard' | 'settings' | 'services' | 'doctors' | 'gallery' | 'testimonials' | 'appointments'
+type TabKey = 'dashboard' | 'settings' | 'services' | 'gallery' | 'testimonials' | 'appointments'
 
 const TABS: { key: TabKey; label: string; icon: any; description: string }[] = [
   { key: 'dashboard', label: 'Inicio', icon: LayoutDashboard, description: 'Resumen del panel' },
-  { key: 'appointments', label: 'Citas', icon: CalendarCheck, description: 'Solicitudes de citas recibidas' },
+  { key: 'appointments', label: 'Mensajes', icon: CalendarCheck, description: 'Sugerencias, reclamos y consultas recibidas' },
   { key: 'settings', label: 'Contenido', icon: Settings, description: 'Editar textos, datos y ajustes' },
-  { key: 'services', label: 'Servicios', icon: Stethoscope, description: 'Administrar servicios médicos' },
-  { key: 'doctors', label: 'Especialistas', icon: UserCircle2, description: 'Administrar equipo médico' },
+  { key: 'services', label: 'Servicios', icon: Stethoscope, description: 'Administrar servicios médicos y especialidades' },
   { key: 'gallery', label: 'Galería', icon: Images, description: 'Administrar imágenes' },
   { key: 'testimonials', label: 'Testimonios', icon: Star, description: 'Administrar testimonios' },
 ]
@@ -139,7 +137,6 @@ export function AdminPanel({ open, onClose, onChange }: Props) {
               {tab === 'appointments' && <AppointmentsManager />}
               {tab === 'settings' && <SettingsEditor />}
               {tab === 'services' && <ServicesManager />}
-              {tab === 'doctors' && <DoctorsManager />}
               {tab === 'gallery' && <GalleryManager />}
               {tab === 'testimonials' && <TestimonialsManager />}
             </div>
@@ -157,7 +154,7 @@ function Dashboard({ onNavigate }: { onNavigate: (k: TabKey) => void }) {
         <h1 className="font-serif text-2xl sm:text-3xl font-bold">Bienvenido al Panel de Administración</h1>
         <p className="mt-2 text-blue-50/90 text-sm sm:text-base">
           Desde aquí podrá gestionar todo el contenido visible de la página web del centro médico:
-          textos, servicios, especialistas, galería, testimonios y citas.
+          textos, servicios y especialidades, galería, testimonios y los mensajes de sugerencias y reclamos.
         </p>
       </div>
 
@@ -185,11 +182,11 @@ function Dashboard({ onNavigate }: { onNavigate: (k: TabKey) => void }) {
         <h3 className="font-serif font-bold text-foreground">¿Cómo usar el panel?</h3>
         <ul className="mt-3 space-y-2 text-sm text-muted-foreground list-disc list-inside">
           <li>En <strong>Contenido</strong>, edite todos los textos del sitio (hero, misión, visión, contacto, etc.).</li>
-          <li>En <strong>Servicios</strong>, agregue o modifique servicios médicos con su ícono e imagen.</li>
-          <li>En <strong>Especialistas</strong>, gestione el equipo médico, sus horarios y fotos.</li>
+          <li>En <strong>Servicios</strong>, agregue o modifique servicios médicos y especialidades con su ícono e imagen.</li>
           <li>En <strong>Galería</strong>, suba fotos de las instalaciones y eventos.</li>
           <li>En <strong>Testimonios</strong>, agregue opiniones de pacientes.</li>
-          <li>En <strong>Citas</strong>, revise y gestione las solicitudes de cita enviadas desde la web.</li>
+          <li>En <strong>Mensajes</strong>, revise y gestione las sugerencias, reclamos y consultas enviadas desde la web.</li>
+          <li>Las citas se agendan directamente por <strong>WhatsApp</strong> (botón visible en todo el sitio).</li>
         </ul>
       </div>
     </div>

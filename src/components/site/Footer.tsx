@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Shield, Heart, MessageCircle } from 'lucide-react'
 
 export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?: () => void }) {
@@ -26,14 +27,16 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </p>
             <div className="mt-5 flex items-center gap-2">
               {settings.socialWhatsapp && (
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
                   href={`https://wa.me/${settings.socialWhatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, quiero agendar una cita en CENCA S.A.S.')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex h-9 items-center gap-1.5 px-3 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-medium transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" /> WhatsApp
-                </a>
+                </motion.a>
               )}
               {[
                 { icon: Facebook, url: settings.socialFacebook },
@@ -41,15 +44,17 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
                 { icon: Twitter, url: settings.socialTwitter },
               ].map((s, i) =>
                 s.url ? (
-                  <a
+                  <motion.a
                     key={i}
                     href={s.url}
                     target="_blank"
                     rel="noreferrer"
+                    whileHover={{ scale: 1.1, y: -3, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
                     className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 hover:bg-primary transition-colors"
                   >
                     <s.icon className="h-4 w-4" />
-                  </a>
+                  </motion.a>
                 ) : null
               )}
             </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Megaphone, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -67,11 +68,27 @@ export function Contact({ settings, services }: { settings: any; services: any[]
 
   return (
     <section id="sugerencias" className="py-20 lg:py-28 bg-gradient-hero text-white relative overflow-hidden">
-      <div className="blur-shape bg-blue-400" style={{ width: 360, height: 360, top: -80, right: -40 }} />
-      <div className="blur-shape bg-cyan-300" style={{ width: 320, height: 320, bottom: -80, left: -40 }} />
+      <motion.div
+        className="blur-shape bg-blue-400"
+        style={{ width: 360, height: 360, top: -80, right: -40 }}
+        animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="blur-shape bg-cyan-300"
+        style={{ width: 320, height: 320, bottom: -80, left: -40 }}
+        animate={{ x: [0, -25, 0], y: [0, -15, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto">
+        <motion.div
+          className="text-center max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <span className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/15 text-blue-50 text-xs font-semibold uppercase tracking-[0.18em]">
             Sugerencias y Reclamos
           </span>
@@ -79,34 +96,59 @@ export function Contact({ settings, services }: { settings: any; services: any[]
             Su opinión nos importa
           </h2>
           <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="h-[3px] w-12 bg-white rounded-full" />
+            <motion.span
+              className="h-[3px] bg-white rounded-full"
+              initial={{ width: 0 }}
+              whileInView={{ width: 48 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            />
             <span className="h-[3px] w-3 bg-white/40 rounded-full" />
           </div>
           <p className="mt-6 text-base sm:text-lg text-blue-50/90 leading-relaxed">
             Escríbanos sus sugerencias, reclamos o felicitaciones. Para agendar una cita, use
             nuestro canal directo por WhatsApp.
           </p>
-        </div>
+        </motion.div>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Contact info + WhatsApp */}
-          <div className="lg:col-span-5 space-y-4">
+          <motion.div
+            className="lg:col-span-5 space-y-4"
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             {/* WhatsApp CTA - prominent */}
-            <div className="rounded-2xl bg-green-500/15 backdrop-blur border border-green-300/40 p-5 flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-green-500">
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+              className="rounded-2xl bg-green-500/15 backdrop-blur border border-green-300/40 p-5 flex items-center gap-4"
+            >
+              <motion.div
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-green-500"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              >
                 <Calendar className="h-7 w-7 text-white" />
-              </div>
+              </motion.div>
               <div className="flex-1">
                 <div className="text-xs uppercase tracking-wide text-green-100">Agendar cita</div>
                 <div className="mt-1 font-bold text-white">Por WhatsApp</div>
                 <div className="text-xs text-green-50/80 mt-0.5">Respuesta rápida y directa</div>
               </div>
-              <Button asChild className="bg-green-500 hover:bg-green-600 text-white">
-                <a href={waHref} target="_blank" rel="noreferrer" className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" /> Enviar
-                </a>
-              </Button>
-            </div>
+              <motion.div
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Button asChild className="bg-green-500 hover:bg-green-600 text-white">
+                  <a href={waHref} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                    <MessageCircle className="h-4 w-4" /> Enviar
+                  </a>
+                </Button>
+              </motion.div>
+            </motion.div>
 
             {[
               { icon: MapPin, title: 'Dirección', value: settings.contactAddress },
@@ -118,7 +160,15 @@ export function Contact({ settings, services }: { settings: any; services: any[]
                 settings.contactHoursSunday,
               ].filter(Boolean).join(' · ') },
             ].map((c, i) => (
-              <div key={i} className="flex items-start gap-4 p-5 rounded-2xl bg-white/10 backdrop-blur border border-white/15">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
+                whileHover={{ x: 4, transition: { type: 'spring', stiffness: 300, damping: 15 } }}
+                className="flex items-start gap-4 p-5 rounded-2xl bg-white/10 backdrop-blur border border-white/15"
+              >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/15">
                   <c.icon className="h-6 w-6 text-white" />
                 </div>
@@ -126,7 +176,7 @@ export function Contact({ settings, services }: { settings: any; services: any[]
                   <div className="text-xs uppercase tracking-wide text-blue-50/80">{c.title}</div>
                   <div className="mt-1 font-medium text-white">{c.value}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
 
             {/* Social */}
@@ -147,15 +197,25 @@ export function Contact({ settings, services }: { settings: any; services: any[]
                 </Button>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Form */}
-          <div className="lg:col-span-7">
+          <motion.div
+            className="lg:col-span-7"
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <form onSubmit={submit} className="rounded-3xl bg-white text-foreground p-6 sm:p-8 shadow-2xl">
               <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <motion.div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+                  whileHover={{ rotate: -8, scale: 1.1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 12 }}
+                >
                   <Megaphone className="h-5 w-5" />
-                </div>
+                </motion.div>
                 <div>
                   <h3 className="font-serif font-bold text-lg">Buzón de Sugerencias</h3>
                   <p className="text-xs text-muted-foreground">Sugerencias, reclamos, felicitaciones o consultas</p>
@@ -208,16 +268,22 @@ export function Contact({ settings, services }: { settings: any; services: any[]
                 </div>
               </div>
               <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 justify-end">
-                <Button type="submit" disabled={loading} className="w-full sm:w-auto">
-                  {loading ? 'Enviando...' : (
-                    <span className="flex items-center gap-2">
-                      <Send className="h-4 w-4" /> Enviar mensaje
-                    </span>
-                  )}
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full sm:w-auto"
+                >
+                  <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                    {loading ? 'Enviando...' : (
+                      <span className="flex items-center gap-2">
+                        <Send className="h-4 w-4" /> Enviar mensaje
+                      </span>
+                    )}
+                  </Button>
+                </motion.div>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

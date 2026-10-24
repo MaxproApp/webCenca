@@ -9,6 +9,7 @@ import { Gallery } from '@/components/site/Gallery'
 import { Testimonials } from '@/components/site/Testimonials'
 import { Contact } from '@/components/site/Contact'
 import { Footer } from '@/components/site/Footer'
+import { FloatingWhatsApp } from '@/components/site/FloatingWhatsApp'
 import { AdminPanel } from '@/components/admin/AdminPanel'
 import { api, type Settings, type Service, type GalleryItem, type Testimonial } from '@/lib/api-client'
 
@@ -96,6 +97,8 @@ export default function Home() {
         <Contact settings={settings} services={services} />
       </main>
       <Footer settings={settings} onOpenAdmin={() => setAdminOpen(true)} />
+
+      <FloatingWhatsApp whatsapp={settings.socialWhatsapp || ''} />
 
       <AdminPanel
         open={adminOpen}

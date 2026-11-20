@@ -29,27 +29,40 @@ export default function Home() {
   const [adminOpen, setAdminOpen] = useState(false)
 
   const loadData = useCallback(async () => {
-    try {
-      const [s, sv, g, t, n] = await Promise.all([
-        api.getSettings(),
-        api.getServices(),
-        api.getGallery(),
-        api.getTestimonials(),
-        api.getNews(),
-      ])
-      setSettings(s)
-      setServices(sv)
-      setGallery(g)
-      setTestimonials(t)
-      setNews(n)
-    } catch (e) {
-      console.error('Failed to load data:', e)
-    } finally {
-      setLoading(false)
+    // Use allSettled so a single failing endpoint (e.g. a transient SQLite lock
+    // in dev) doesn't wipe out settings/gallery/news/testimonials too.
+    const results = await Promise.allSettled([
+      api.getSettings(),
+      api.getServices(),
+      api.getGallery(),
+      api.getTestimonials(),
+      api.getNews(),
+    ])
+    const [s, sv, g, t, n] = results.map((r) =>
+      r.status === 'fulfilled' ? r.value : [],
+    ) as [Settings, Service[], GalleryItem[], Testimonial[], NewsItem[]]
+    // Settings is an object, not an array — fall back to {} on failure.
+    const settingsResult = results[0].status === 'fulfilled' ? (results[0].value as Settings) : {}
+    setSettings(settingsResult)
+    setServices(sv)
+    setGallery(g)
+    setTestimonials(t)
+    setNews(n)
+
+    // Log only the failures that survived retry, so the page still renders.
+    const failed = ['settings', 'services', 'gallery', 'testimonials', 'news'].filter(
+      (_, i) => results[i].status === 'rejected',
+    )
+    if (failed.length) {
+      console.warn('Partial data load failure:', failed, results)
     }
+    setLoading(false)
   }, [])
 
   useEffect(() => {
+    // Initial data fetch — setState calls inside loadData happen after
+    // `await Promise.allSettled`, so they are not synchronous cascading renders.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
   }, [loadData])
 

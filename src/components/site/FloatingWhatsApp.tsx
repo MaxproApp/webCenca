@@ -90,7 +90,6 @@ export function FloatingWhatsApp({ whatsapp }: Props) {
               <MessageCircle className="h-7 w-7" />
             </motion.div>
 
-            {/* Pulse ring */}
             <motion.span
               className="absolute inset-0 rounded-full border-2 border-green-300 pointer-events-none"
               animate={{ scale: [1, 1.4], opacity: [0.6, 0] }}

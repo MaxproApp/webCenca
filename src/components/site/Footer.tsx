@@ -9,7 +9,6 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
     <footer className="bg-foreground text-background pt-16 pb-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Brand */}
           <div className="md:col-span-4">
             <div className="flex items-center gap-3">
               <img
@@ -61,13 +60,13 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </div>
           </div>
 
-          {/* Quick links */}
           <div className="md:col-span-3">
             <h4 className="font-serif font-bold text-white mb-4">Navegación</h4>
             <ul className="space-y-2 text-sm text-white/70">
               {[
                 { href: '#nosotros', label: 'Nosotros' },
                 { href: '#servicios', label: 'Servicios' },
+                { href: '#soat', label: 'SOAT' },
                 { href: '#noticias', label: 'Noticias' },
                 { href: '#galeria', label: 'Galería' },
                 { href: '#testimonios', label: 'Testimonios' },
@@ -80,7 +79,6 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </ul>
           </div>
 
-          {/* Sedes */}
           {(settings.sede1Address || settings.sede2Address) && (
             <div className="md:col-span-3">
               <h4 className="font-serif font-bold text-white mb-4 flex items-center gap-2">
@@ -121,7 +119,6 @@ export function Footer({ settings, onOpenAdmin }: { settings: any; onOpenAdmin?:
             </div>
           )}
 
-          {/* Contact */}
           <div className="md:col-span-2">
             <h4 className="font-serif font-bold text-white mb-4">Contacto</h4>
             <ul className="space-y-3 text-sm text-white/70">

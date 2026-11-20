@@ -11,28 +11,31 @@ import {
 } from '@/components/ui/dialog'
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Noticia: 'bg-blue-100 text-blue-700 border-blue-200',
-  Blog: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  Evento: 'bg-amber-100 text-amber-700 border-amber-200',
+  Noticia: 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border-blue-200/60',
+  Blog: 'bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 border-emerald-200/60',
+  Evento: 'bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 border-amber-200/60',
 }
-const CATEGORY_DEFAULT = 'bg-primary/10 text-primary border-primary/20'
+const CATEGORY_DEFAULT = 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 border-pink-200/60'
 
 export function News({ items }: { items: NewsItem[] }) {
   const [selected, setSelected] = useState<NewsItem | null>(null)
 
   if (!items || items.length === 0) return null
 
-  // Featured + regular
   const featured = items.find((i) => i.featured) || items[0]
   const rest = items.filter((i) => i.id !== featured.id).slice(0, 6)
 
   return (
-    <section id="noticias" className="py-20 lg:py-28 bg-white relative overflow-hidden">
-      {/* Soft decoration */}
+    <section id="noticias" className="py-20 lg:py-28 bg-gradient-to-b from-white via-sky-50/30 to-white relative overflow-hidden">
       <motion.div
-        className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-10 right-10 w-72 h-72 bg-gradient-to-br from-sky-200/40 to-blue-200/40 rounded-full blur-3xl pointer-events-none"
         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl pointer-events-none"
+        animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -43,7 +46,7 @@ export function News({ items }: { items: NewsItem[] }) {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-[0.18em]">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 text-xs font-semibold uppercase tracking-[0.18em] border border-sky-200/50">
             <Newspaper className="h-3.5 w-3.5" /> Noticias y Novedades
           </span>
           <h2 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
@@ -51,11 +54,11 @@ export function News({ items }: { items: NewsItem[] }) {
           </h2>
           <div className="mt-4 flex items-center justify-center gap-2">
             <motion.span
-              className="h-[3px] bg-primary rounded-full"
+              className="h-[3px] bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-400 rounded-full"
               initial={{ width: 0 }}
-              whileInView={{ width: 48 }}
+              whileInView={{ width: 96 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             />
             <span className="h-[3px] w-3 bg-primary/40 rounded-full" />
           </div>
@@ -65,9 +68,7 @@ export function News({ items }: { items: NewsItem[] }) {
           </p>
         </motion.div>
 
-        {/* Featured + Grid */}
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Featured card */}
           <motion.article
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -128,7 +129,6 @@ export function News({ items }: { items: NewsItem[] }) {
             </div>
           </motion.article>
 
-          {/* Rest of the news */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             initial="hidden"
@@ -179,7 +179,6 @@ export function News({ items }: { items: NewsItem[] }) {
         </div>
       </div>
 
-      {/* Modal/lightbox for full article */}
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
         <DialogContent className="max-w-3xl max-h-[88vh] overflow-y-auto p-0">
           <DialogTitle className="sr-only">{selected?.title}</DialogTitle>

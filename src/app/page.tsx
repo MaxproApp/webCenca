@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { AnimatePresence } from 'framer-motion'
 import { Header } from '@/components/site/Header'
 import { Hero } from '@/components/site/Hero'
 import { About } from '@/components/site/About'
@@ -12,6 +11,11 @@ import { Contact } from '@/components/site/Contact'
 import { Footer } from '@/components/site/Footer'
 import { FloatingWhatsApp } from '@/components/site/FloatingWhatsApp'
 import { News } from '@/components/site/News'
+import { Marquee } from '@/components/site/Marquee'
+import { BackToTop } from '@/components/site/BackToTop'
+import { CustomCursor } from '@/components/site/CustomCursor'
+import { InstallationsWatermark } from '@/components/site/InstallationsWatermark'
+import { SoatSection } from '@/components/site/SoatSection'
 import { AdminPanel } from '@/components/admin/AdminPanel'
 import { api, type Settings, type Service, type GalleryItem, type Testimonial, type NewsItem } from '@/lib/api-client'
 
@@ -67,6 +71,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <CustomCursor />
       <Header
         brandName={settings.brandName || 'CENCA S.A.S.'}
         phone={settings.contactPhone || ''}
@@ -88,6 +93,8 @@ export default function Home() {
           statsServices={settings.statsServices}
           statsServicesLabel={settings.statsServicesLabel}
         />
+        {/* Marquee de servicios destacados */}
+        <Marquee />
         <About
           aboutTitle={settings.aboutTitle}
           aboutContent={settings.aboutContent}
@@ -96,7 +103,10 @@ export default function Home() {
           visionTitle={settings.visionTitle}
           visionContent={settings.visionContent}
         />
+        {/* Marca de agua animada con las instalaciones */}
+        <InstallationsWatermark items={gallery} />
         <Services items={services} />
+        <SoatSection settings={settings} />
         {news.length > 0 && <News items={news} />}
         {gallery.length > 0 && <Gallery items={gallery} />}
         {testimonials.length > 0 && <Testimonials items={testimonials} />}
@@ -105,14 +115,13 @@ export default function Home() {
       <Footer settings={settings} onOpenAdmin={() => setAdminOpen(true)} />
 
       <FloatingWhatsApp whatsapp={settings.socialWhatsapp || ''} />
+      <BackToTop />
 
-      <AnimatePresence>
-        <AdminPanel
-          open={adminOpen}
-          onClose={() => setAdminOpen(false)}
-          onChange={loadData}
-        />
-      </AnimatePresence>
+      <AdminPanel
+        open={adminOpen}
+        onClose={() => setAdminOpen(false)}
+        onChange={loadData}
+      />
     </div>
   )
 }

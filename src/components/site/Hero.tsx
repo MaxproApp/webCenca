@@ -1,9 +1,13 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Phone, ShieldCheck, Stethoscope, Award, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AnimatedCounter } from './AnimatedCounter'
+import { TypingText } from './TypingText'
+import { WaveDivider } from './WaveDivider'
+import { Particles } from './Particles'
 
 const container = {
   hidden: {},
@@ -30,29 +34,43 @@ export function Hero({
   statsServicesLabel,
 }: any) {
   const waHref = `https://wa.me/${(whatsapp || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, quiero agendar una cita en CENCA S.A.S.')}`
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+  // Parallax: hero content moves up slower than scroll, blobs move at different speeds
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -120])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  const blob1Y = useTransform(scrollYProgress, [0, 1], [0, -200])
+  const blob2Y = useTransform(scrollYProgress, [0, 1], [0, -150])
+  const blob3Y = useTransform(scrollYProgress, [0, 1], [0, -250])
+  const logoY = useTransform(scrollYProgress, [0, 1], [0, -80])
+  const statsY = useTransform(scrollYProgress, [0, 1], [0, -60])
   return (
-    <section id="inicio" className="relative overflow-hidden bg-gradient-hero">
-      {/* Animated decorative blur shapes */}
+    <section id="inicio" ref={sectionRef} className="relative overflow-hidden bg-gradient-hero">
+      {/* Particles floating */}
+      <Particles count={10} opacity={0.5} />
+
       <motion.div
         className="blur-shape bg-blue-400"
-        style={{ width: 480, height: 480, top: -120, right: -80 }}
-        animate={{ x: [0, 30, 0], y: [0, 20, 0], scale: [1, 1.1, 1] }}
+        style={{ width: 480, height: 480, top: -120, right: -80, y: blob1Y }}
+        animate={{ x: [0, 30, 0], scale: [1, 1.1, 1] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="blur-shape bg-blue-200"
-        style={{ width: 380, height: 380, bottom: -120, left: -60 }}
-        animate={{ x: [0, -25, 0], y: [0, -15, 0], scale: [1, 1.15, 1] }}
+        style={{ width: 380, height: 380, bottom: -120, left: -60, y: blob2Y }}
+        animate={{ x: [0, -25, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="blur-shape bg-cyan-200"
-        style={{ width: 280, height: 280, top: '40%', right: '30%' }}
-        animate={{ y: [0, 30, 0], opacity: [0.5, 0.7, 0.5] }}
+        style={{ width: 280, height: 280, top: '40%', right: '30%', y: blob3Y }}
+        animate={{ opacity: [0.5, 0.7, 0.5] }}
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Grid pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
@@ -67,22 +85,29 @@ export function Hero({
         initial="hidden"
         animate="visible"
         variants={container}
+        style={{ y: contentY, opacity: contentOpacity }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          {/* Left content */}
           <div className="lg:col-span-7 text-white">
             {heroBadge && (
               <motion.div
                 variants={item}
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur px-4 py-1.5 mb-6 border border-white/15"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur px-4 py-1.5 mb-6 border border-white/15 relative overflow-hidden"
               >
+                {/* Shimmer effect */}
                 <motion.span
-                  animate={{ scale: [1, 1.2, 1] }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="relative"
                 >
                   <ShieldCheck className="h-4 w-4 text-cyan-300" />
                 </motion.span>
-                <span className="text-xs sm:text-sm font-medium text-blue-50">{heroBadge}</span>
+                <span className="text-xs sm:text-sm font-medium text-blue-50 relative">{heroBadge}</span>
               </motion.div>
             )}
             <motion.h1
@@ -95,7 +120,7 @@ export function Hero({
               variants={item}
               className="mt-6 text-base sm:text-lg lg:text-xl text-blue-50/90 max-w-2xl leading-relaxed"
             >
-              {heroSubtitle}
+              <TypingText text={heroSubtitle} speed={25} delay={800} cursor={false} />
             </motion.p>
 
             <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
@@ -130,7 +155,6 @@ export function Hero({
               </motion.div>
             </motion.div>
 
-            {/* Trust badges */}
             <motion.div
               variants={item}
               className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl"
@@ -162,12 +186,12 @@ export function Hero({
             </motion.div>
           </div>
 
-          {/* Right - logo card */}
           <motion.div
             className="lg:col-span-5 flex justify-center"
             initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{ y: logoY }}
           >
             <motion.div
               className="relative"
@@ -203,7 +227,6 @@ export function Hero({
           </motion.div>
         </div>
 
-        {/* Stats bar */}
         <motion.div
           className="mt-16 lg:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           initial="hidden"
@@ -212,6 +235,7 @@ export function Hero({
           variants={{
             visible: { transition: { staggerChildren: 0.12 } },
           }}
+          style={{ y: statsY }}
         >
           {[
             { value: statsExperience, label: statsExperienceLabel },
@@ -242,20 +266,7 @@ export function Hero({
         </motion.div>
       </motion.div>
 
-      {/* Wave divider */}
-      <div className="relative">
-        <svg
-          viewBox="0 0 1440 80"
-          className="block w-full h-[40px] sm:h-[60px]"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            fill="#ffffff"
-            d="M0 40 Q 360 80 720 40 T 1440 40 V80 H0 Z"
-          />
-        </svg>
-      </div>
+      <WaveDivider color="#ffffff" speed={9} height={70} />
     </section>
   )
 }

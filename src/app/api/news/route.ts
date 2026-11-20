@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
-// GET /api/news - List all news (public)
 export async function GET() {
   try {
     const items = await db.newsItem.findMany({
@@ -10,12 +9,11 @@ export async function GET() {
     })
     return NextResponse.json(items)
   } catch (e: any) {
-    console.error('[api/news] GET error:', e?.message, e?.stack)
-    return NextResponse.json({ error: 'Error al obtener noticias', detail: e?.message }, { status: 500 })
+    console.error('[api/news] GET error:', e?.message)
+    return NextResponse.json({ error: 'Error al obtener noticias' }, { status: 500 })
   }
 }
 
-// POST /api/news - Create a news item (admin only)
 export async function POST(req: NextRequest) {
   const { validateAdmin } = await import('@/lib/auth')
   if (!(await validateAdmin(req))) {

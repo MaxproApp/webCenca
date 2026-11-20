@@ -33,24 +33,21 @@ const FIELDS: { key: string; label: string; type?: 'text' | 'textarea'; group: s
   { key: 'statsServices', label: 'Estadística 4 (valor)', group: 'Estadísticas' },
   { key: 'statsServicesLabel', label: 'Estadística 4 (etiqueta)', group: 'Estadísticas' },
   // Contact
-  { key: 'contactAddress', label: 'Dirección (general)', type: 'textarea', group: 'Contacto' },
+  { key: 'contactAddress', label: 'Dirección', type: 'textarea', group: 'Contacto' },
   { key: 'contactPhone', label: 'Teléfono', group: 'Contacto' },
   { key: 'contactMobile', label: 'Celular', group: 'Contacto' },
   { key: 'contactEmail', label: 'Email', group: 'Contacto' },
   { key: 'contactHoursWeekday', label: 'Horario Lun-Vie', group: 'Contacto' },
   { key: 'contactHoursSaturday', label: 'Horario Sábado', group: 'Contacto' },
   { key: 'contactHoursSunday', label: 'Horario Domingo', group: 'Contacto' },
-  // Sedes
-  { key: 'sede1Title', label: 'Sede 01 - Título', group: 'Sedes' },
-  { key: 'sede1Address', label: 'Sede 01 - Dirección', type: 'textarea', group: 'Sedes' },
-  { key: 'sede1Hours', label: 'Sede 01 - Horario', group: 'Sedes' },
-  { key: 'sede2Title', label: 'Sede 02 - Título', group: 'Sedes' },
-  { key: 'sede2Address', label: 'Sede 02 - Dirección', type: 'textarea', group: 'Sedes' },
-  { key: 'sede2Hours', label: 'Sede 02 - Horario', group: 'Sedes' },
   { key: 'socialFacebook', label: 'Facebook URL', group: 'Redes sociales' },
   { key: 'socialInstagram', label: 'Instagram URL', group: 'Redes sociales' },
   { key: 'socialTwitter', label: 'Twitter URL', group: 'Redes sociales' },
   { key: 'socialWhatsapp', label: 'WhatsApp (con código país)', group: 'Redes sociales' },
+  // SOAT
+  { key: 'soatEmergencyPhone', label: 'Teléfono emergencia SOAT', group: 'SOAT' },
+  { key: 'soatTitle', label: 'Título sección SOAT', group: 'SOAT' },
+  { key: 'soatSubtitle', label: 'Subtítulo SOAT', type: 'textarea', group: 'SOAT' },
   { key: 'footerText', label: 'Texto del pie', type: 'textarea', group: 'Footer' },
 ]
 

@@ -18,7 +18,6 @@ export function VisitCounter({ className = '', variant = 'dark' }: Props) {
   const [incremented, setIncremented] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  // On mount: increment visit
   useEffect(() => {
     let mounted = true
     api.incrementVisit()
@@ -31,7 +30,6 @@ export function VisitCounter({ className = '', variant = 'dark' }: Props) {
       })
       .catch(() => {
         if (mounted) {
-          // Fallback: just get count without incrementing
           api.getVisits()
             .then((r) => { if (mounted) { setCount(r.count); setLoading(false) } })
             .catch(() => setLoading(false))
@@ -40,7 +38,6 @@ export function VisitCounter({ className = '', variant = 'dark' }: Props) {
     return () => { mounted = false }
   }, [])
 
-  // Animate the counter when in view
   useEffect(() => {
     if (!inView || !count) return
     let start: number | null = null
@@ -76,7 +73,7 @@ export function VisitCounter({ className = '', variant = 'dark' }: Props) {
       whileHover={{ scale: 1.02 }}
     >
       <motion.span
-        animate={{ scale: [1, 1.15, 1], color: ['#67e8f9', '#22d3ee', '#67e8f9'] }}
+        animate={{ scale: [1, 1.15, 1] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
       >
         <Eye className="h-3.5 w-3.5" />

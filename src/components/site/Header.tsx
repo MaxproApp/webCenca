@@ -38,6 +38,7 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
     { href: '#inicio', label: 'Inicio' },
     { href: '#nosotros', label: 'Nosotros' },
     { href: '#servicios', label: 'Servicios' },
+    { href: '#soat', label: 'SOAT' },
     { href: '#noticias', label: 'Noticias' },
     { href: '#galeria', label: 'Galería' },
     { href: '#testimonios', label: 'Testimonios' },
@@ -56,7 +57,6 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
           <Link href="#inicio" className="flex items-center gap-3 group">
             <img
               src="/logo-candelaria.jpg"
@@ -71,7 +71,6 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
             </div>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((l) => (
               <Link
@@ -84,7 +83,6 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
             ))}
           </nav>
 
-          {/* CTA */}
           <div className="hidden lg:flex items-center gap-2">
             <Button
               asChild
@@ -104,7 +102,6 @@ export function Header({ brandName, phone, whatsapp }: HeaderProps) {
             </Button>
           </div>
 
-          {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menú">

@@ -21,7 +21,6 @@ import { ImageUploader } from './ImageUploader'
 const ICON_OPTIONS = [
   'stethoscope', 'heart-pulse', 'baby', 'flower', 'bone', 'hand', 'eye', 'smile',
   'activity', 'brain', 'syringe', 'pill',
-  'radiography', 'ultrasound', 'electrocardiogram', 'stethoscope-2',
 ]
 
 export function ServicesManager() {

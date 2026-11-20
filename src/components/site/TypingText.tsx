@@ -30,16 +30,23 @@ export function TypingText({
   const [displayed, setDisplayed] = useState('')
   const [started, setStarted] = useState(false)
 
+  // Guard: text may be undefined while settings load from the API.
+  // Coerce to string so .length / .slice never throw.
+  const safeText = typeof text === 'string' ? text : ''
+
   useEffect(() => {
+    // Nothing to type yet — initial state is already empty, just bail out.
+    if (!safeText) return
+
     let timeout: any
     let interval: any
     let charIndex = 0
 
     const start = () => {
       interval = setInterval(() => {
-        if (charIndex < text.length) {
+        if (charIndex < safeText.length) {
           charIndex += 1
-          setDisplayed(text.slice(0, charIndex))
+          setDisplayed(safeText.slice(0, charIndex))
         } else {
           clearInterval(interval)
           if (loop) {
@@ -62,11 +69,12 @@ export function TypingText({
       clearTimeout(timeout)
       clearInterval(interval)
     }
-  }, [text, speed, delay, loop, loopPause])
+  }, [safeText, speed, delay, loop, loopPause])
 
   return (
     <span className={className}>
-      <span>{displayed}</span>
+      {/* Render empty when text is undefined so we never show stale typed text */}
+      <span>{safeText ? displayed : ''}</span>
       {cursor && (
         <motion.span
           className="inline-block w-[2px] ml-0.5 align-middle"

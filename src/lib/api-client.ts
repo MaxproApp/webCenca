@@ -97,53 +97,75 @@ async function jsonReq(url: string, method: string, body?: any) {
   return res.json()
 }
 
+/**
+ * GET with retry — SQLite (used in dev) can briefly return HTTP 500 when a
+ * sibling script holds the write lock. A short backoff + retry absorbs that
+ * transient error without surfacing it to the user.
+ */
+async function jsonReqGetRetry(url: string, retries = 2, backoffMs = 250) {
+  let lastErr: unknown
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await jsonReq(url, 'GET')
+    } catch (e) {
+      lastErr = e
+      // Only retry on 5xx (server errors). 4xx (auth/bad request) won't fix themselves.
+      const msg = e instanceof Error ? e.message : ''
+      const is5xx = /HTTP 5\d\d/.test(msg) || msg === 'Error desconocido'
+      if (!is5xx || attempt === retries) throw e
+      await new Promise((r) => setTimeout(r, backoffMs * (attempt + 1)))
+    }
+  }
+  throw lastErr
+}
+
 // Auth
 export const api = {
   login: (email: string, password: string) =>
     jsonReq('/api/auth', 'POST', { email, password }),
 
   // Services
-  getServices: () => jsonReq('/api/services', 'GET'),
+  getServices: () => jsonReqGetRetry('/api/services'),
   createService: (data: Partial<Service>) => jsonReq('/api/services', 'POST', data),
   updateService: (id: string, data: Partial<Service>) => jsonReq(`/api/services/${id}`, 'PUT', data),
   deleteService: (id: string) => jsonReq(`/api/services/${id}`, 'DELETE'),
 
   // Doctors
-  getDoctors: () => jsonReq('/api/doctors', 'GET'),
+  getDoctors: () => jsonReqGetRetry('/api/doctors'),
   createDoctor: (data: Partial<Doctor>) => jsonReq('/api/doctors', 'POST', data),
   updateDoctor: (id: string, data: Partial<Doctor>) => jsonReq(`/api/doctors/${id}`, 'PUT', data),
   deleteDoctor: (id: string) => jsonReq(`/api/doctors/${id}`, 'DELETE'),
 
   // Gallery
-  getGallery: () => jsonReq('/api/gallery', 'GET'),
+  getGallery: () => jsonReqGetRetry('/api/gallery'),
   createGallery: (data: Partial<GalleryItem>) => jsonReq('/api/gallery', 'POST', data),
   updateGallery: (id: string, data: Partial<GalleryItem>) => jsonReq(`/api/gallery/${id}`, 'PUT', data),
   deleteGallery: (id: string) => jsonReq(`/api/gallery/${id}`, 'DELETE'),
 
   // Testimonials
-  getTestimonials: () => jsonReq('/api/testimonials', 'GET'),
+  getTestimonials: () => jsonReqGetRetry('/api/testimonials'),
   createTestimonial: (data: Partial<Testimonial>) => jsonReq('/api/testimonials', 'POST', data),
   updateTestimonial: (id: string, data: Partial<Testimonial>) => jsonReq(`/api/testimonials/${id}`, 'PUT', data),
   deleteTestimonial: (id: string) => jsonReq(`/api/testimonials/${id}`, 'DELETE'),
 
   // Settings
-  getSettings: () => jsonReq('/api/settings', 'GET'),
+  getSettings: () => jsonReqGetRetry('/api/settings'),
   saveSettings: (data: Settings) => jsonReq('/api/settings', 'POST', data),
 
   // Appointments
-  getAppointments: () => jsonReq('/api/appointments', 'GET'),
+  getAppointments: () => jsonReqGetRetry('/api/appointments'),
   createAppointment: (data: Partial<Appointment>) => jsonReq('/api/appointments', 'POST', data),
   updateAppointment: (id: string, data: Partial<Appointment>) => jsonReq(`/api/appointments/${id}`, 'PUT', data),
   deleteAppointment: (id: string) => jsonReq(`/api/appointments/${id}`, 'DELETE'),
 
   // News
-  getNews: () => jsonReq('/api/news', 'GET'),
+  getNews: () => jsonReqGetRetry('/api/news'),
   createNews: (data: Partial<NewsItem>) => jsonReq('/api/news', 'POST', data),
   updateNews: (id: string, data: Partial<NewsItem>) => jsonReq(`/api/news/${id}`, 'PUT', data),
   deleteNews: (id: string) => jsonReq(`/api/news/${id}`, 'DELETE'),
 
   // Visits
-  getVisits: () => jsonReq('/api/visits', 'GET'),
+  getVisits: () => jsonReqGetRetry('/api/visits'),
   incrementVisit: () => jsonReq('/api/visits', 'POST'),
 
   // Upload

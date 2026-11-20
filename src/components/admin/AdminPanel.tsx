@@ -40,11 +40,19 @@ interface Props {
 export function AdminPanel({ open, onClose, onChange }: Props) {
   const [authed, setAuthed] = useState<boolean>(() => !!getAdminToken())
   const [tab, setTab] = useState<TabKey>('dashboard')
+  // Bumped when the user clicks "Recargar"; passed as part of the active
+  // manager's key so it remounts and refetches fresh data from the API.
+  const [refreshSignal, setRefreshSignal] = useState(0)
 
   const logout = () => {
     clearAdminToken()
     setAuthed(false)
     onClose()
+  }
+
+  const refresh = () => {
+    setRefreshSignal((n) => n + 1)
+    onChange()
   }
 
   if (!open) return null
@@ -62,7 +70,7 @@ export function AdminPanel({ open, onClose, onChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent showCloseButton={false} className="max-w-6xl w-[96vw] h-[94vh] p-0 gap-0 overflow-hidden !flex !flex-col !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !m-0">
+      <DialogContent showCloseButton={false} className="!max-w-6xl !w-[96vw] max-h-[90vh] h-[90vh] p-0 gap-0 overflow-hidden !flex !flex-col !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !m-0">
         <DialogHeader className="sr-only">
           <DialogTitle>Panel de administración</DialogTitle>
         </DialogHeader>
@@ -124,16 +132,16 @@ export function AdminPanel({ open, onClose, onChange }: Props) {
           {/* Main */}
           <div className="flex-1 flex flex-col min-w-0 min-h-0">
             {/* Topbar */}
-            <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white shrink-0">
-              <div className="min-w-0">
-                <h2 className="font-serif text-lg sm:text-xl font-bold flex items-center gap-2 truncate">
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white shrink-0 gap-3">
+              <div className="min-w-0 flex-1">
+                <h2 className="font-serif text-lg sm:text-xl font-bold flex items-center gap-2">
                   <activeTab.icon className="h-5 w-5 text-primary shrink-0" />
-                  {activeTab.label}
+                  <span className="truncate">{activeTab.label}</span>
                 </h2>
                 <p className="text-xs text-muted-foreground truncate">{activeTab.description}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <Button size="sm" variant="outline" onClick={() => onChange()}>
+                <Button size="sm" variant="outline" onClick={refresh}>
                   Recargar
                 </Button>
                 <Button size="sm" variant="ghost" onClick={onClose}>
@@ -142,21 +150,25 @@ export function AdminPanel({ open, onClose, onChange }: Props) {
               </div>
             </div>
 
-            {/* Content */}
+            {/* Content — explicit height so overflow-y-auto actually scrolls
+                regardless of how the flex chain resolves min-h-0. */}
             <motion.div
               key={tab}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 overflow-y-auto p-3 sm:p-5 bg-muted/20 pb-20 md:pb-5 min-h-0"
+              style={{ maxHeight: 'calc(90vh - 64px)' }}
             >
-              {tab === 'dashboard' && <Dashboard onNavigate={setTab} />}
-              {tab === 'appointments' && <AppointmentsManager />}
-              {tab === 'settings' && <SettingsEditor />}
-              {tab === 'services' && <ServicesManager />}
-              {tab === 'news' && <NewsManager />}
-              {tab === 'gallery' && <GalleryManager />}
-              {tab === 'testimonials' && <TestimonialsManager />}
+              {/* key includes refreshSignal so "Recargar" remounts the active
+                  manager and triggers its useEffect refetch. */}
+              {tab === 'dashboard' && <Dashboard key={`dash-${refreshSignal}`} onNavigate={setTab} />}
+              {tab === 'appointments' && <AppointmentsManager key={`appt-${refreshSignal}`} />}
+              {tab === 'settings' && <SettingsEditor key={`set-${refreshSignal}`} />}
+              {tab === 'services' && <ServicesManager key={`svc-${refreshSignal}`} />}
+              {tab === 'news' && <NewsManager key={`news-${refreshSignal}`} />}
+              {tab === 'gallery' && <GalleryManager key={`gal-${refreshSignal}`} />}
+              {tab === 'testimonials' && <TestimonialsManager key={`test-${refreshSignal}`} />}
             </motion.div>
           </div>
         </motion.div>

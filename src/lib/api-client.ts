@@ -87,6 +87,9 @@ function authHeader(): Record<string, string> {
 async function jsonReq(url: string, method: string, body?: any) {
   const res = await fetch(url, {
     method,
+    // no-store: admin edits must always see fresh DB state, not a cached GET.
+    // Also avoids the "panel shows 4 items after DB has 10" class of bug.
+    cache: 'no-store',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: body ? JSON.stringify(body) : undefined,
   })

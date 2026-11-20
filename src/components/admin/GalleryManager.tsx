@@ -58,19 +58,19 @@ export function GalleryManager() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {items.map((g) => (
           <Card key={g.id}>
             <CardContent className="p-3">
-              <div className="aspect-square rounded-lg overflow-hidden bg-muted mb-2">
+              <div className="h-28 rounded-lg overflow-hidden bg-muted mb-2">
                 {g.image && g.image.startsWith('/') ? (
                   <img src={g.image} alt={g.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-muted flex items-center justify-center text-xs text-muted-foreground">Sin imagen</div>
                 )}
               </div>
-              <h4 className="font-semibold text-sm truncate">{g.title}</h4>
-              {g.category && <p className="text-xs text-primary">{g.category}</p>}
+              <h4 className="font-semibold text-sm leading-snug break-words min-h-[2.5em]">{g.title}</h4>
+              {g.category && <p className="text-xs text-primary truncate mt-0.5">{g.category}</p>}
               <div className="mt-2 flex gap-1.5">
                 <Button size="sm" variant="outline" onClick={() => setEditing(g)}>
                   <Pencil className="h-3.5 w-3.5" />

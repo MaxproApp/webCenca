@@ -84,6 +84,19 @@ function authHeader(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+/**
+ * Error carrying the HTTP status, so callers can branch on 404 (record gone)
+ * vs a real 500. Thrown by jsonReq on any non-2xx response.
+ */
+export class ApiError extends Error {
+  status: number
+  constructor(message: string, status: number) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
+
 async function jsonReq(url: string, method: string, body?: any) {
   const res = await fetch(url, {
     method,
@@ -95,7 +108,7 @@ async function jsonReq(url: string, method: string, body?: any) {
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: 'Error desconocido' }))
-    throw new Error(err.error || `HTTP ${res.status}`)
+    throw new ApiError(err.error || `HTTP ${res.status}`, res.status)
   }
   return res.json()
 }

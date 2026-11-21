@@ -17,6 +17,7 @@ import { Plus, Pencil, Trash2, Loader2, Star, Calendar } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, type NewsItem } from '@/lib/api-client'
 import { ImageUploader } from './ImageUploader'
+import { ConfirmDialog } from './ConfirmDialog'
 
 const CATEGORY_OPTIONS = ['Noticia', 'Blog', 'Evento']
 
@@ -25,6 +26,7 @@ export function NewsManager() {
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<NewsItem | null>(null)
   const [creating, setCreating] = useState(false)
+  const [deleting, setDeleting] = useState<NewsItem | null>(null)
 
   const load = async () => {
     try {
@@ -48,7 +50,6 @@ export function NewsManager() {
   }
 
   const remove = async (id: string) => {
-    if (!confirm('¿Eliminar esta noticia?')) return
     try { await api.deleteNews(id); toast.success('Eliminada'); load() } catch (e: any) { toast.error(e.message) }
   }
 
@@ -90,7 +91,7 @@ export function NewsManager() {
                     <Button size="sm" variant="outline" onClick={() => setEditing(n)}>
                       <Pencil className="h-3.5 w-3.5" /> Editar
                     </Button>
-                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(n.id)}>
+                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setDeleting(n)}>
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -104,6 +105,16 @@ export function NewsManager() {
       {(editing || creating) && (
         <NewsForm initial={editing || undefined} onClose={() => { setEditing(null); setCreating(false) }} onSave={save} />
       )}
+
+      <ConfirmDialog
+        open={!!deleting}
+        title="¿Eliminar esta noticia?"
+        description={deleting ? `«${deleting.title}» se eliminará permanentemente.` : undefined}
+        confirmLabel="Eliminar"
+        destructive
+        onConfirm={() => { const id = deleting?.id; setDeleting(null); if (id) remove(id) }}
+        onCancel={() => setDeleting(null)}
+      />
     </div>
   )
 }

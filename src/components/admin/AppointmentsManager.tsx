@@ -13,6 +13,7 @@ import {
 import { Trash2, Loader2, Mail, Phone, Calendar, MessageSquare, CheckCircle, Clock, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, type Appointment } from '@/lib/api-client'
+import { ConfirmDialog } from './ConfirmDialog'
 
 const STATUS_LABEL: Record<string, string> = {
   pending: 'Pendiente',
@@ -29,6 +30,7 @@ export function AppointmentsManager() {
   const [items, setItems] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<Appointment | null>(null)
+  const [deleting, setDeleting] = useState<Appointment | null>(null)
 
   const load = async () => {
     try {
@@ -49,7 +51,6 @@ export function AppointmentsManager() {
   }
 
   const remove = async (id: string) => {
-    if (!confirm('¿Eliminar esta cita?')) return
     try { await api.deleteAppointment(id); toast.success('Eliminada'); load() } catch (e: any) { toast.error(e.message) }
   }
 
@@ -89,7 +90,7 @@ export function AppointmentsManager() {
                     {a.message && <p className="mt-1.5 text-xs text-muted-foreground line-clamp-1"><MessageSquare className="h-3 w-3 inline mr-1" />{a.message}</p>}
                     <p className="mt-1 text-[10px] text-muted-foreground/70">Recibido: {new Date(a.createdAt).toLocaleString('es-CO')}</p>
                   </div>
-                  <Button size="sm" variant="outline" className="text-destructive hover:text-destructive shrink-0" onClick={(e) => { e.stopPropagation(); remove(a.id) }}>
+                  <Button size="sm" variant="outline" className="text-destructive hover:text-destructive shrink-0" onClick={(e) => { e.stopPropagation(); setDeleting(a) }}>
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>
@@ -133,6 +134,16 @@ export function AppointmentsManager() {
           </DialogContent>
         </Dialog>
       )}
+
+      <ConfirmDialog
+        open={!!deleting}
+        title="¿Eliminar esta cita?"
+        description={deleting ? `La solicitud de «${deleting.name}» se eliminará permanentemente.` : undefined}
+        confirmLabel="Eliminar"
+        destructive
+        onConfirm={() => { const id = deleting?.id; setDeleting(null); if (id) remove(id) }}
+        onCancel={() => setDeleting(null)}
+      />
     </div>
   )
 }

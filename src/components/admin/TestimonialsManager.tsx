@@ -17,12 +17,14 @@ import { Plus, Pencil, Trash2, Loader2, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, type Testimonial } from '@/lib/api-client'
 import { ImageUploader } from './ImageUploader'
+import { ConfirmDialog } from './ConfirmDialog'
 
 export function TestimonialsManager() {
   const [items, setItems] = useState<Testimonial[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Testimonial | null>(null)
   const [creating, setCreating] = useState(false)
+  const [deleting, setDeleting] = useState<Testimonial | null>(null)
 
   const load = async () => {
     try {
@@ -43,7 +45,6 @@ export function TestimonialsManager() {
   }
 
   const remove = async (id: string) => {
-    if (!confirm('¿Eliminar este testimonio?')) return
     try { await api.deleteTestimonial(id); toast.success('Eliminado'); load() } catch (e: any) { toast.error(e.message) }
   }
 
@@ -78,7 +79,7 @@ export function TestimonialsManager() {
                     <Button size="sm" variant="outline" onClick={() => setEditing(t)}>
                       <Pencil className="h-3.5 w-3.5" /> Editar
                     </Button>
-                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(t.id)}>
+                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setDeleting(t)}>
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -93,6 +94,16 @@ export function TestimonialsManager() {
       {(editing || creating) && (
         <TestimonialForm initial={editing || undefined} onClose={() => { setEditing(null); setCreating(false) }} onSave={save} />
       )}
+
+      <ConfirmDialog
+        open={!!deleting}
+        title="¿Eliminar este testimonio?"
+        description={deleting ? `El testimonio de «${deleting.name}» se eliminará permanentemente.` : undefined}
+        confirmLabel="Eliminar"
+        destructive
+        onConfirm={() => { const id = deleting?.id; setDeleting(null); if (id) remove(id) }}
+        onCancel={() => setDeleting(null)}
+      />
     </div>
   )
 }

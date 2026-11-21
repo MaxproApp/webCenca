@@ -17,6 +17,7 @@ import { Plus, Pencil, Trash2, Loader2, GripVertical } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, type Service } from '@/lib/api-client'
 import { ImageUploader } from './ImageUploader'
+import { ConfirmDialog } from './ConfirmDialog'
 
 const ICON_OPTIONS = [
   'stethoscope', 'heart-pulse', 'baby', 'flower', 'bone', 'hand', 'eye', 'smile',
@@ -28,6 +29,7 @@ export function ServicesManager() {
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Service | null>(null)
   const [creating, setCreating] = useState(false)
+  const [deleting, setDeleting] = useState<Service | null>(null)
 
   const load = async () => {
     try {
@@ -63,7 +65,6 @@ export function ServicesManager() {
   }
 
   const remove = async (id: string) => {
-    if (!confirm('¿Eliminar este servicio?')) return
     try {
       await api.deleteService(id)
       toast.success('Servicio eliminado')
@@ -102,7 +103,7 @@ export function ServicesManager() {
                     <Button size="sm" variant="outline" onClick={() => setEditing(s)}>
                       <Pencil className="h-3.5 w-3.5" /> Editar
                     </Button>
-                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(s.id)}>
+                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setDeleting(s)}>
                       <Trash2 className="h-3.5 w-3.5" /> Eliminar
                     </Button>
                   </div>
@@ -121,6 +122,16 @@ export function ServicesManager() {
           onSave={save}
         />
       )}
+
+      <ConfirmDialog
+        open={!!deleting}
+        title="¿Eliminar este servicio?"
+        description={deleting ? `«${deleting.name}» se eliminará permanentemente.` : undefined}
+        confirmLabel="Eliminar"
+        destructive
+        onConfirm={() => { const id = deleting?.id; setDeleting(null); if (id) remove(id) }}
+        onCancel={() => setDeleting(null)}
+      />
     </div>
   )
 }

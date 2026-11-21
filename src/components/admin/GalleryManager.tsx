@@ -17,12 +17,14 @@ import { Plus, Pencil, Trash2, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, type GalleryItem } from '@/lib/api-client'
 import { ImageUploader } from './ImageUploader'
+import { ConfirmDialog } from './ConfirmDialog'
 
 export function GalleryManager() {
   const [items, setItems] = useState<GalleryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<GalleryItem | null>(null)
   const [creating, setCreating] = useState(false)
+  const [deleting, setDeleting] = useState<GalleryItem | null>(null)
 
   const load = async () => {
     try {
@@ -43,7 +45,6 @@ export function GalleryManager() {
   }
 
   const remove = async (id: string) => {
-    if (!confirm('¿Eliminar esta imagen?')) return
     try { await api.deleteGallery(id); toast.success('Eliminada'); load() } catch (e: any) { toast.error(e.message) }
   }
 
@@ -75,7 +76,7 @@ export function GalleryManager() {
                 <Button size="sm" variant="outline" onClick={() => setEditing(g)}>
                   <Pencil className="h-3.5 w-3.5" />
                 </Button>
-                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(g.id)}>
+                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setDeleting(g)}>
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
               </div>
@@ -87,6 +88,16 @@ export function GalleryManager() {
       {(editing || creating) && (
         <GalleryForm initial={editing || undefined} onClose={() => { setEditing(null); setCreating(false) }} onSave={save} />
       )}
+
+      <ConfirmDialog
+        open={!!deleting}
+        title="¿Eliminar esta imagen?"
+        description={deleting ? `«${deleting.title}» se eliminará permanentemente.` : undefined}
+        confirmLabel="Eliminar"
+        destructive
+        onConfirm={() => { const id = deleting?.id; setDeleting(null); if (id) remove(id) }}
+        onCancel={() => setDeleting(null)}
+      />
     </div>
   )
 }
